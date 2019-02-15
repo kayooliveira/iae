@@ -72,7 +72,12 @@ function MenuGi() {
 function en_us() {
     #Load Keymap
     loadkeys us
+    #Installing REFLECTOR to improve download performance
+    pacman -Syy
+    pacman -S reflector
+    reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
     #Partitioning the disk
+    clear
     lsblk
     echo ""
     echo "Select the disk for partitioning, use the '/' before the disk ID, for example: / sda or / sdb or / sdc (...)."
