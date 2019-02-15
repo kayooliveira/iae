@@ -43,7 +43,7 @@ MenuPrincipal() {
 #Choose the GI MENU
     MenuGi() {
         clear
-        echo "================================================================"
+        echo "=================================================="
         echo "WHAT IS THE GRAPHIC INTERFACE YOU WISH TO INSTALL?"
         echo "=================================================="
         echo
