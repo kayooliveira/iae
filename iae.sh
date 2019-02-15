@@ -2,7 +2,7 @@
 
 #Welcome MENU
 clear
-MenuBoasVindas() {
+function WelcomeMenu() {
     clear
     echo   "==========================================="
     echo -e "            WELCOME TO \033[01;32mIAE\033[01;37m  "
@@ -17,12 +17,12 @@ MenuBoasVindas() {
     echo "Press ENTER to continue"
     read -p ":" input
     case $input in 
-    *) MenuPrincipal ;;
+    *) MainMeu ;;
     esac
 }
 
 #Main MENU
-MenuPrincipal() {
+function MainMeu() {
     clear
     echo -e "\033[01;34m==============================="
     echo -e "      \033[01;34mWHATS YOUR LANGUAGE?"
@@ -36,12 +36,12 @@ MenuPrincipal() {
     1) en_us ;;
     2) pt_br ;;
     3) es ;;
-    *) MenuPrincipal ;;
+    *) MainMeu ;;
     esac
 }
 
-#Choose the GI MENU
-    MenuGi() {
+#Choose the GI | MENU
+function MenuGi() {
         clear
         echo "=================================================="
         echo "WHAT IS THE GRAPHIC INTERFACE YOU WISH TO INSTALL?"
@@ -69,7 +69,7 @@ MenuPrincipal() {
     }
 
 #Script in english language
-en_us() {
+function en_us() {
     #Load Keymap
     loadkeys us
     #Partitioning the disk
@@ -111,7 +111,12 @@ en_us() {
     mkdir /mnt/home
     mount /dev$home /mnt/home
     #Function for install base and base-devel
-    BaseBaseDevel
+    pacstrap /mnt base base-devel && en_us2
+    
+}
+
+function en_us2() {
+    echo
     genfstab -U /mnt >> /mnt/etc/fstab
     #Setting the localtime
     arch-chroot "/mnt"
@@ -168,36 +173,8 @@ en_us() {
 
 }
 
-BaseBaseDevel() {
-    echo 
-    echo "==========================================================================="
-    echo "If there is a problem and the script does not load after the installation, "
-    echo "just type 'exit' to return to the script."
-    echo "==========================================================================="
-    echo "Wait 5sec to continue..."
-    echo 
-    sleep 5
-    pacstrap /mnt base base-devel
-    }
-
-#Script in portuguese language
-pt_br() {
-    echo "Este idioma ainda não foi adicionado, aguarde futuras atualizações."
-    echo "Aguarde 5seg para voltar ao menu"
-    sleep 5
-    MenuPrincipal
-}
-
-#Script in spanish language
-es() {
-    echo "Este idioma no se ha agregado, espere a futuras actualizaciones."
-    echo "Espere 5seg para volver al menú"
-    sleep 5
-    MenuPrincipal
-}
-
 #xfce4 function GI MENU
-xfce4() {
+function xfce4() {
     echo "Installing the packages..."
     pacman -S archlinux-keyring bash-completion dosfstools efibootmgr f2fs-tools firefox gamin gparted grub gvfs gvfs-mtp htop intel-ucode lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager network-manager-applet ntfs-3g p7zip pulseaudio-alsa qt5ct qt5-styleplugins tlp ttf-dejavu ttf-liberation unrar vlc xdg-user-dirs xf86-input-libinput xf86-video-intel xorg-server xorg-xinit linux-headers gnome-disk-utility reflector xf86-input-synaptics xfce4
     systemctl enable NetworkManager
@@ -209,7 +186,7 @@ xfce4() {
 }
 
 #lxde function GI MENU
-lxde() {
+function lxde() {
     echo "Installing the packages..."
     pacman -S archlinux-keyring bash-completion dosfstools efibootmgr f2fs-tools firefox gamin gparted grub gvfs gvfs-mtp htop intel-ucode lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager network-manager-applet ntfs-3g p7zip pulseaudio-alsa qt5ct qt5-styleplugins tlp ttf-dejavu ttf-liberation unrar vlc xdg-user-dirs xf86-input-libinput xf86-video-intel xorg-server xorg-xinit linux-headers gnome-disk-utility reflector xf86-input-synaptics lxde
         systemctl enable NetworkManager
@@ -221,7 +198,7 @@ lxde() {
 }
 
 #kde function GI MENU
-plasma() {
+function plasma() {
     echo "Installing the packages..."
     pacman -S archlinux-keyring bash-completion dosfstools efibootmgr f2fs-tools firefox gamin gparted grub gvfs gvfs-mtp htop intel-ucode lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager network-manager-applet ntfs-3g p7zip pulseaudio-alsa qt5ct qt5-styleplugins tlp ttf-dejavu ttf-liberation unrar vlc xdg-user-dirs xf86-input-libinput xf86-video-intel xorg-server xorg-xinit linux-headers gnome-disk-utility reflector xf86-input-synaptics plasma
     systemctl enable NetworkManager
@@ -233,7 +210,7 @@ plasma() {
 }
 
 #gnome function GI MENU
-gnome() {
+function gnome() {
     echo "Installing the packages..."
     pacman -S archlinux-keyring bash-completion dosfstools efibootmgr f2fs-tools firefox gamin gparted grub gvfs gvfs-mtp htop intel-ucode lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager network-manager-applet ntfs-3g p7zip pulseaudio-alsa qt5ct qt5-styleplugins tlp ttf-dejavu ttf-liberation unrar vlc xdg-user-dirs xf86-input-libinput xf86-video-intel xorg-server xorg-xinit linux-headers gnome-disk-utility reflector xf86-input-synaptics gnome
     systemctl enable NetworkManager
@@ -245,7 +222,7 @@ gnome() {
 }
 
 #cinnamon function GI MENU
-cinnamon() {
+function cinnamon() {
     echo "Installing the packages..."
     pacman -S archlinux-keyring bash-completion dosfstools efibootmgr f2fs-tools firefox gamin gparted grub gvfs gvfs-mtp htop intel-ucode lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager network-manager-applet ntfs-3g p7zip pulseaudio-alsa qt5ct qt5-styleplugins tlp ttf-dejavu ttf-liberation unrar vlc xdg-user-dirs xf86-input-libinput xf86-video-intel xorg-server xorg-xinit linux-headers gnome-disk-utility reflector xf86-input-synaptics cinnamon
     systemctl enable NetworkManager
@@ -256,7 +233,7 @@ cinnamon() {
     reboot
 }
 
-mate() {
+function mate() {
     echo "Installing the packages..."
     pacman -S archlinux-keyring bash-completion dosfstools efibootmgr f2fs-tools firefox gamin gparted grub gvfs gvfs-mtp htop intel-ucode lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager network-manager-applet ntfs-3g p7zip pulseaudio-alsa qt5ct qt5-styleplugins tlp ttf-dejavu ttf-liberation unrar vlc xdg-user-dirs xf86-input-libinput xf86-video-intel xorg-server xorg-xinit linux-headers gnome-disk-utility reflector xf86-input-synaptics mate
     systemctl enable NetworkManager
@@ -266,4 +243,21 @@ mate() {
     umount -a
     reboot
 }
-MenuBoasVindas
+
+#Script in portuguese language
+function pt_br() {
+    echo "Este idioma ainda não foi adicionado, aguarde futuras atualizações."
+    echo "Aguarde 5seg para voltar ao menu"
+    sleep 5
+    MainMeu
+}
+
+#Script in spanish language
+function es() {
+    echo "Este idioma no se ha agregado, espere a futuras actualizaciones."
+    echo "Espere 5seg para volver al menú"
+    sleep 5
+    MainMeu
+}
+
+WelcomeMenu
