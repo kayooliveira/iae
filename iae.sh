@@ -4,16 +4,16 @@
 clear
 MenuBoasVindas() {
     clear
-    echo   "__________________________________________"
+    echo   "==========================================="
     echo -e "            WELCOME TO \033[01;32mIAE\033[01;37m  "
     echo   "      ARCH LINUX INSTALLATION SCRIPT      "
-    echo   "------------------------------------------"
-    echo -e "Developed by \033[01;32mKayoOliveira\033[01;37m and \033[01;32mRobsonSilv4\033[01;37m"
-    echo -e "\033[01;32m------------------------------------------\033[01;37m"
-    echo -e "\033[01;32mhttps://github.com/kayooliveira1/iae\033[01;37m"
-    echo -e "\033[01;32mhttps://github.com/robsonsilv4/iae\033[01;37m"
+    echo   "-------------------------------------------"
+    echo -e " Developed by \033[01;32mKayoOliveira\033[01;37m and \033[01;32mRobsonSilv4\033[01;37m"
+    echo -e "\033[01;32m-------------------------------------------\033[01;37m"
+    echo -e "   \033[01;32mhttps://github.com/kayooliveira1/iae\033[01;37m"
+    echo -e "    \033[01;32mhttps://github.com/robsonsilv4/iae\033[01;37m"
     echo -e '\n'
-    echo "________________________"
+    echo "_______________________"
     echo "Press ENTER to continue"
     read -p ":" input
     case $input in 
@@ -28,8 +28,8 @@ MenuPrincipal() {
     echo -e "      \033[01;34mWHATS YOUR LANGUAGE?"
     echo ""
     echo -e "\033[01;31m[ 1 ] | ENGLISH\033[01;37m"
-    echo -e "\033[01;31m[ 3 ] | PORTUGUÊS \033[05;33m(NOT WORKING)\033[00;37m"
-    echo -e "\033[01;31m[ 2 ] | ESPAÑOL \033[05;33m(NOT WORKING)\033[00;37m"
+    echo -e "\033[01;31m[ 2 ] | PORTUGUÊS \033[01;33m(NOT WORKING)\033[01;37m"
+    echo -e "\033[01;31m[ 3 ] | ESPAÑOL \033[01;33m(NOT WORKING)\033[01;37m"
     echo 
     read -p ":" input
     case $input in
@@ -43,7 +43,7 @@ MenuPrincipal() {
 #Choose the GI MENU
     MenuGi() {
         clear
-        echo "=================================================="
+        echo "================================================================"
         echo "WHAT IS THE GRAPHIC INTERFACE YOU WISH TO INSTALL?"
         echo "=================================================="
         echo
@@ -53,7 +53,7 @@ MenuPrincipal() {
         echo "[ 4 ] | GNOME"
         echo "[ 5 ] | CINNAMON"
         echo "[ 6 ] | MATE"
-        echo -e "[ 7 ] | UNITY \033[05;33m(NOT WORKING)\033[00;37m"
+        echo -e "[ 7 ] | UNITY \033[01;33m(NOT WORKING)\033[01;37m"
         echo
         read -p ":" gi
         case $gi in
@@ -110,36 +110,54 @@ en_us() {
     swapon /dev$swap
     mkdir /mnt/home
     mount /dev$home /mnt/home
-    #Installing base and base-devel
-    pacstrap /mnt 'base base-devel'
+    #Function for install base and base-devel
+    BaseBaseDevel
     genfstab -U /mnt >> /mnt/etc/fstab
     #Setting the localtime
     arch-chroot "/mnt"
-    arch-chroot "ln-sf /usr/share/zoneinfo/Ameria/New_York /etc/localtime"
+    arch-chroot "ln-sf /usr/share/zoneinfo/America/New_York /etc/localtime"
     arch-chroot "hwclock --systohc"
     #nano /etc/locale.gen
-    echo "Now enter the file /etc/locale.gen and uncomment the line 176 (# en_US.UTF-8 UTF-8)."
+    echo
+    echo "============================================================="
+    echo "Now enter the file /etc/locale.gen and uncomment the line 176"
+    echo "(# en_US.UTF-8 UTF-8) remove the '#'."
     echo "Then press CTRL + O to save."
-    echo "Wait 10sec to continue"
-    sleep 10
+    echo "============================================================="
+    echo "Wait 15sec to continue"
+    sleep 15
     nano /etc/locale.gen
     locale-gen
     echo LANG=en_US.UTF-8 > /etc/locale.conf
     localectl set-x11-keymap us
     #Hostame and passwd set
+    echo
+    echo "======================="
     echo "Enter the computer name"
+    echo "======================="
+    echo 
     read -p ":" hostname
     echo $hostname > /etc/hostname
     passwd
     #Username and passwd set
+    echo
+    echo "=================="
     echo "Enter the username"
+    echo "=================="
+    echo
     read -p ":" username
     useradd -m -G wheel -s /bin/bash $username
     passwd $username
     #EDITOR=nano visudo
+    echo
+    echo "=========================================================="
     echo "Now enter the /etc/sudoers.tmp file and go to line 80."
-    echo "Then add your username with the same root user attributes, example (username ALL = (ALL) ALL)."
-    echo "Wait 10sec to continue"
+    echo "Then add your username with the same root user attributes,"
+    echo "example (username ALL = (ALL) ALL)."
+    echo "=========================================================="
+    echo "Wait 10sec to continue..."
+    echo 
+    sleep 10
     EDITOR=nano visudo
     #Grub installer
     pacman -S grub efibootmgr
@@ -150,18 +168,37 @@ en_us() {
 
 }
 
+BaseBaseDevel() {
+    echo 
+    echo "==========================================================================="
+    echo "If there is a problem and the script does not load after the installation, "
+    echo "just type 'exit' to return to the script."
+    echo "==========================================================================="
+    echo "Wait 5sec to continue..."
+    echo 
+    sleep 5
+    pacstrap /mnt base base-devel
+    }
+
 #Script in portuguese language
 pt_br() {
+    echo "Este idioma ainda não foi adicionado, aguarde futuras atualizações."
+    echo "Aguarde 5seg para voltar ao menu"
+    sleep 5
     MenuPrincipal
 }
 
 #Script in spanish language
 es() {
+    echo "Este idioma no se ha agregado, espere a futuras actualizaciones."
+    echo "Espere 5seg para volver al menú"
+    sleep 5
     MenuPrincipal
 }
 
 #xfce4 function GI MENU
 xfce4() {
+    echo "Installing the packages..."
     pacman -S archlinux-keyring bash-completion dosfstools efibootmgr f2fs-tools firefox gamin gparted grub gvfs gvfs-mtp htop intel-ucode lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager network-manager-applet ntfs-3g p7zip pulseaudio-alsa qt5ct qt5-styleplugins tlp ttf-dejavu ttf-liberation unrar vlc xdg-user-dirs xf86-input-libinput xf86-video-intel xorg-server xorg-xinit linux-headers gnome-disk-utility reflector xf86-input-synaptics xfce4
     systemctl enable NetworkManager
     systemctl enable lightdm
@@ -173,12 +210,19 @@ xfce4() {
 
 #lxde function GI MENU
 lxde() {
+    echo "Installing the packages..."
     pacman -S archlinux-keyring bash-completion dosfstools efibootmgr f2fs-tools firefox gamin gparted grub gvfs gvfs-mtp htop intel-ucode lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager network-manager-applet ntfs-3g p7zip pulseaudio-alsa qt5ct qt5-styleplugins tlp ttf-dejavu ttf-liberation unrar vlc xdg-user-dirs xf86-input-libinput xf86-video-intel xorg-server xorg-xinit linux-headers gnome-disk-utility reflector xf86-input-synaptics lxde
-
+        systemctl enable NetworkManager
+    systemctl enable lightdm
+    systemctl enable tlp
+    exit
+    umount -a
+    reboot
 }
 
 #kde function GI MENU
 plasma() {
+    echo "Installing the packages..."
     pacman -S archlinux-keyring bash-completion dosfstools efibootmgr f2fs-tools firefox gamin gparted grub gvfs gvfs-mtp htop intel-ucode lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager network-manager-applet ntfs-3g p7zip pulseaudio-alsa qt5ct qt5-styleplugins tlp ttf-dejavu ttf-liberation unrar vlc xdg-user-dirs xf86-input-libinput xf86-video-intel xorg-server xorg-xinit linux-headers gnome-disk-utility reflector xf86-input-synaptics plasma
     systemctl enable NetworkManager
     systemctl enable lightdm
@@ -190,6 +234,7 @@ plasma() {
 
 #gnome function GI MENU
 gnome() {
+    echo "Installing the packages..."
     pacman -S archlinux-keyring bash-completion dosfstools efibootmgr f2fs-tools firefox gamin gparted grub gvfs gvfs-mtp htop intel-ucode lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager network-manager-applet ntfs-3g p7zip pulseaudio-alsa qt5ct qt5-styleplugins tlp ttf-dejavu ttf-liberation unrar vlc xdg-user-dirs xf86-input-libinput xf86-video-intel xorg-server xorg-xinit linux-headers gnome-disk-utility reflector xf86-input-synaptics gnome
     systemctl enable NetworkManager
     systemctl enable lightdm
@@ -201,6 +246,7 @@ gnome() {
 
 #cinnamon function GI MENU
 cinnamon() {
+    echo "Installing the packages..."
     pacman -S archlinux-keyring bash-completion dosfstools efibootmgr f2fs-tools firefox gamin gparted grub gvfs gvfs-mtp htop intel-ucode lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager network-manager-applet ntfs-3g p7zip pulseaudio-alsa qt5ct qt5-styleplugins tlp ttf-dejavu ttf-liberation unrar vlc xdg-user-dirs xf86-input-libinput xf86-video-intel xorg-server xorg-xinit linux-headers gnome-disk-utility reflector xf86-input-synaptics cinnamon
     systemctl enable NetworkManager
     systemctl enable lightdm
@@ -211,6 +257,7 @@ cinnamon() {
 }
 
 mate() {
+    echo "Installing the packages..."
     pacman -S archlinux-keyring bash-completion dosfstools efibootmgr f2fs-tools firefox gamin gparted grub gvfs gvfs-mtp htop intel-ucode lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager network-manager-applet ntfs-3g p7zip pulseaudio-alsa qt5ct qt5-styleplugins tlp ttf-dejavu ttf-liberation unrar vlc xdg-user-dirs xf86-input-libinput xf86-video-intel xorg-server xorg-xinit linux-headers gnome-disk-utility reflector xf86-input-synaptics mate
     systemctl enable NetworkManager
     systemctl enable lightdm
