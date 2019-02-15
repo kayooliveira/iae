@@ -111,7 +111,7 @@ en_us() {
     mkdir /mnt/home
     mount /dev$home /mnt/home
     #Installing base and base-devel
-    pacstrap /mnt "base base-devel"
+    pacstrap /mnt 'base base-devel'
     genfstab -U /mnt >> /mnt/etc/fstab
     #Setting the localtime
     arch-chroot "/mnt"
