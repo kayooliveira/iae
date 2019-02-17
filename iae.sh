@@ -59,8 +59,9 @@ function en_us() {
     echo "Now, partition your disk, remember to create the partitions for the directories (/ boot, / home, swap and /)."
     sleep 5
     cfdisk /dev$disk
-    clear 
+    clear
     #Formating partitions
+    lsblk
     echo "Enter the partition ID that will be '/boot'. example: /sda1"
     echo
     read -p ":" boot
@@ -90,9 +91,9 @@ function en_us() {
     mkdir /mnt/home
     mount /dev$home /mnt/home
     #Move Part2 and 3 from / directory
-    mv /iae/iaep2.sh /
-    mv /iae/iaep3.sh /
-    mv /iae/iaep4.sh /
+    mv /iae/iaep2.sh /mnt
+    mv /iae/iaep3.sh /mnt
+    mv /iae/iaep4.sh /mnt
     #Function for install base and base-devel
     pacstrap /mnt base base-devel
     
