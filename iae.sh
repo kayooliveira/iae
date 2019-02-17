@@ -44,6 +44,8 @@ function MainMeu() {
 function en_us() {
     #Load Keymap
     loadkeys us
+    #clear
+    clear
     #Installing REFLECTOR to improve download performance
     pacman -Syy
     pacman -S reflector
