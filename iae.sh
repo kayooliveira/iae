@@ -61,6 +61,7 @@ function en_us() {
     cfdisk /dev$disk
     clear 
     #Formating partitions
+    lsblk
     echo "Enter the partition ID that will be '/boot'. example: /sda1"
     echo
     read -p ":" boot
